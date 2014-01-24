@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>streamtools demo</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+    </head>
+    <body>
+        <div id="sorry"></div>
+        <script>
+            if (window.DeviceOrientationEvent) {
+                console.log("DeviceOrientation is supported");
+
+                $.post("/send", {"msg":"start"})
+
+                var tilt = 0;
+
+                setInterval(function(){
+                    out = {"verticalTilt": tilt}
+                    $.post("/send", out)
+                }, 500)
+
+                window.addEventListener('deviceorientation', function(d){
+                    console.log(d.beta);
+                    document.getElementById("sorry").innerHTML = d.beta;
+                    tilt = d.beta;
+                } , false);
+            }else {
+                document.getElementById("sorry").innerHTML = "Not supported on your device or browser.  Sorry."
+           }
+        </script>
+    </body>
+
+</html>
+
